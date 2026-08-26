@@ -10,19 +10,15 @@ class InventoryManager:
         if not name or not price:
             return False
 
-        new_product = Product(name, price)
         new_ID = self.find_new_ID()
+        new_product = Product(new_ID, name, price)
 
-        new_product.ID = new_ID
         self.products.append(new_product)
 
         return True
 
     def list_products(self):
-        for product in self.products:
-            print(
-                f"{product.ID} | {product.name} | {product.price} | {product.quantity}"
-            )
+        return self.products
 
     def view_product(self, ID):
         pass
