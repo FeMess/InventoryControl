@@ -20,6 +20,9 @@ class InventoryManager:
         return new_product
 
     def list_products(self, status="all"):
+        if status not in ["all", "active", "inactive"]:
+            raise ValueError("The status is not valid.")
+
         if status == "all":
             products_list = self.products.copy()
         else:
@@ -56,10 +59,20 @@ class InventoryManager:
                 "The product cannot be deactivated because it has quantity in stock."
             )
 
+        if product.status == "inactive":
+            raise ValueError(
+                "The product cannot be deactivated because it is already inactive."
+            )
+
         product.status = "inactive"
 
     def reactivate_product(self, identifier):
         product = self.view_product(identifier)
+
+        if product.status == "active":
+            raise ValueError(
+                "The product cannot be activated because it is already active."
+            )
 
         product.status = "active"
 
