@@ -10,5 +10,5 @@ class Movement:
         self.id = identifier
         self.created_on = created_on
         self.product_id = product_id
-        self.moviment_type = movement_type
+        self.movement_type = movement_type
         self.quantity = quantity
