@@ -72,6 +72,9 @@ class CLI:
     def _show_products(self, product_status):
         products_list = self.manager.list_products(product_status)
 
+        if not products_list:
+            raise ValueError("There are not any product available.")
+
         for product in products_list:
             print(
                 f"[{product.id}] {product.name} ({product.status.title()}) | {product.quantity:.2f}"
@@ -133,7 +136,13 @@ class CLI:
 
         print("\nSelected option: Deactivate Product\n")
 
-        self._show_products("active")
+        try:
+            self._show_products("active")
+        except ValueError as e:
+            print(f"{e}")
+            sleep(3)
+            return
+
         product_identifier = input("\nProduct ID: ")
 
         try:
@@ -159,7 +168,13 @@ class CLI:
 
         print("\nSelected option: Activate Product\n")
 
-        self._show_products("inactive")
+        try:
+            self._show_products("inactive")
+        except ValueError as e:
+            print(f"{e}")
+            sleep(3)
+            return
+
         product_identifier = input("\nProduct ID: ")
 
         try:
@@ -185,7 +200,13 @@ class CLI:
 
         print("\nSelected option: Update Product\n")
 
-        self._show_products("all")
+        try:
+            self._show_products("all")
+        except ValueError as e:
+            print(f"{e}")
+            sleep(3)
+            return
+
         product_identifier = input("\nProduct ID: ")
 
         try:
@@ -224,7 +245,13 @@ class CLI:
 
         print("\nSelected option: View Product\n")
 
-        self._show_products("all")
+        try:
+            self._show_products("all")
+        except ValueError as e:
+            print(f"{e}")
+            sleep(3)
+            return
+
         product_identifier = input("\nProduct ID: ")
 
         try:
@@ -250,7 +277,12 @@ class CLI:
 
         print("\nSelected option: List Products\n")
 
-        self._show_products("all")
+        try:
+            self._show_products("all")
+        except ValueError as e:
+            print(f"{e}")
+            sleep(3)
+            return
 
         input("\n[Press Enter]")
 
@@ -259,7 +291,13 @@ class CLI:
 
         print("\nSelected option: Registry Entry\n")
 
-        self._show_products("active")
+        try:
+            self._show_products("active")
+        except ValueError as e:
+            print(f"{e}")
+            sleep(3)
+            return
+
         product_identifier = input("\nProduct ID: ")
 
         try:
@@ -292,7 +330,13 @@ class CLI:
 
         print("\nSelected option: Registry Exit\n")
 
-        self._show_products("active")
+        try:
+            self._show_products("active")
+        except ValueError as e:
+            print(f"{e}")
+            sleep(3)
+            return
+
         product_identifier = input("\nProduct ID: ")
 
         try:
