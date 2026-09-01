@@ -1,5 +1,5 @@
-from models.cli import CLI
-from models.inventory_manager import InventoryManager
+from presentation.cli import CLI
+from service.inventory_manager import InventoryManager
 
 if __name__ == "__main__":
     manager = InventoryManager()
