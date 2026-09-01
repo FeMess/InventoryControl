@@ -10,7 +10,6 @@ class InventoryManager:
         self.history = []
 
     # Public Methods
-
     def new_product(self, name, price):
         self._validate_name(name)
         self._validate_price(price)
@@ -52,6 +51,7 @@ class InventoryManager:
         self._validate_quantity(quantity)
 
         product = self.view_product(identifier)
+        self._validate_product(product, "ENTRY", quantity)
 
         product.quantity += quantity
 
@@ -62,16 +62,14 @@ class InventoryManager:
         self._validate_quantity(quantity)
 
         product = self.view_product(identifier)
-
-        if product.quantity < quantity:
-            raise ValueError("The product does not have this quantity.")
+        self._validate_product(product, "EXIT", quantity)
 
         product.quantity -= quantity
 
         # Saving EXIT Movement
         self._register_movement(product, "EXIT", quantity)
 
-    # Internal Methods
+    # Internal Methods (Business Roles)
     def _register_movement(self, product, movement_type, quantity):
         new_movement = Movement(
             self._find_new_identifier(self.history),
@@ -118,3 +116,10 @@ class InventoryManager:
 
         if not quantity > 0:
             raise ValueError("The quantity must be a positive value.")
+
+    def _validate_product(self, product, movement_type, quantity):
+        if product.status == "inactive":
+            raise ValueError("The product contains inactive status.")
+
+        if movement_type == "EXIT" and product.quantity < quantity:
+            raise ValueError("The product does not have the necessary quantity.")
