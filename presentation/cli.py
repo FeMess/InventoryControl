@@ -9,6 +9,7 @@ class CLI:
     def present_system(self):
         while True:
             self._show_header()
+            self._show_low_stock_products()
 
             print("\n[0] - Exit")
             print("[1] - New Product")
@@ -19,6 +20,7 @@ class CLI:
             print("[6] - List Products")
             print("[7] - Register Entry")
             print("[8] - Register Exit")
+            print("[9] - List Movements")
 
             user_choice = input("\nWhich option would you like to choose? ")
 
@@ -37,9 +39,30 @@ class CLI:
     # Internal Methods
     def _show_header(self):
         os.system("clear")
-        print("-" * 30)
-        print("| Inventory Control, Welcome! |")
-        print("-" * 30)
+        print("-" * 50)
+        print("|           Inventory Control, Welcome!           |")
+        print("-" * 50)
+
+    def _show_low_stock_products(self):
+        print("-" * 50)
+        print("|               Low Stock Products                |")
+
+        low_stock_products = self.manager.list_low_stock_products()
+
+        if not low_stock_products:
+            print("|   There are not any product with low stock.     |")
+        else:
+            for product in low_stock_products:
+                defined_size = 49
+                product_input = f"{product.name} | {product.quantity:.2f}"
+                total_space = defined_size - len(product_input)
+
+                left_space = total_space // 2
+                right_space = total_space - left_space
+
+                print(f"|{' ' * left_space}{product_input}{' ' * right_space}|")
+
+        print("-" * 50)
 
     def _process_choice(self, user_choice):
         if user_choice == "0":
@@ -69,6 +92,9 @@ class CLI:
         elif user_choice == "8":
             self._register_movement_exit()
 
+        elif user_choice == "9":
+            self._list_movements()
+
     def _show_products(self, product_status):
         products_list = self.manager.list_products(product_status)
 
@@ -82,7 +108,7 @@ class CLI:
 
     # Validating User Input
     def _validate_choice(self, user_choice):
-        if not user_choice in ["0", "1", "2", "3", "4", "5", "6", "7", "8"]:
+        if not user_choice in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
             raise ValueError("This option is not allowed.")
 
     def _parse_price(self, price):
@@ -363,3 +389,24 @@ class CLI:
             print(f"\n{e}")
             sleep(3)
             return
+
+    def _list_movements(self):
+        self._show_header()
+
+        print("\nSelected option: List Movements\n")
+
+        movements = self.manager.list_movements()
+
+        if not movements:
+            print("There are not any movement available.")
+            sleep(3)
+            return
+
+        for movement in movements:
+            product = self.manager.view_product(movement.product_id)
+
+            print(
+                f"({movement.id}) {movement.created_on.strftime('%d/%m/%Y %H:%M:%S')} | {product.name} | {movement.movement_type.title()} | {movement.quantity:.2f}"
+            )
+
+        input("\n[Press Enter]")
