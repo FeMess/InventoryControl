@@ -98,6 +98,18 @@ class InventoryManager:
         # Saving EXIT Movement
         self._register_movement(product, "EXIT", quantity)
 
+    def list_movements(self):
+        return self.history.copy()
+
+    def list_low_stock_products(self):
+        low_stock_products = [
+            product
+            for product in self.products
+            if product.quantity < 4 and product.status == "active"
+        ]
+
+        return low_stock_products
+
     # Internal Methods
     def _register_movement(self, product, movement_type, quantity):
         new_movement = Movement(
