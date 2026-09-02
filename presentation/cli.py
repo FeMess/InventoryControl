@@ -142,6 +142,14 @@ class CLI:
         print("\nSelected option: New Product\n")
 
         product_name = input("Product Name: ")
+
+        try:
+            self.manager._validate_name(product_name)
+        except ValueError as e:
+            print(f"\n{e}")
+            sleep(3)
+            return
+
         product_price = input("Product Price: ")
 
         try:
